@@ -17,6 +17,6 @@ export async function GET(context) {
   //     });
   //   } catch (error) {
   //     console.error("Database error:", error);
-  return new Response("Database query failed", { status: 500 });
+  return new Response(JSON.stringify(result), { status: 500 });
   //   }
 }
