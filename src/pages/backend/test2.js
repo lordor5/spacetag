@@ -2,10 +2,8 @@
 
 export async function GET(context) {
   const db = context.locals.runtime.env.DB;
-  const result = await db.prepare("SELECT * FROM cosas WHERE cosa = 12;").run()
-    .results;
-  console.log(db);
-  console.log(result);
+  const result = await db.prepare("SELECT * FROM cosas WHERE cosa = 12;").run();
+  console.log(result.results);
   //   try {
   //     // Prepare and execute the SQL query using Cloudflare D1 API
   //     const result = await db.prepare("SELECT * FROM ID").all();
@@ -16,6 +14,6 @@ export async function GET(context) {
   //     });
   //   } catch (error) {
   //     console.error("Database error:", error);
-  return new Response(JSON.stringify(result), { status: 500 });
+  return new Response(JSON.stringify(result.results), { status: 500 });
   //   }
 }
