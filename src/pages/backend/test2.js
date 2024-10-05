@@ -2,7 +2,7 @@
 
 export async function GET(context) {
   const db = context.locals.runtime.env.DB;
-  const result = await db.prepare("SELECT * FROM cosas WHERE cosa = 12;").run();
+  const result = await db.prepare("SELECT * FROM usuarios WHERE id = 0;").run();
   console.log(result.results);
   //   try {
   //     // Prepare and execute the SQL query using Cloudflare D1 API
