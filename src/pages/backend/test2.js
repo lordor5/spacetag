@@ -1,6 +1,6 @@
-import type { APIContext } from "astro";
+//import type { APIContext } from "astro";
 
-export async function GET(context: APIContext): Promise<Response> {
+export async function GET(context) {
   const db = context.locals.runtime.env.DB;
   const result = await db.prepare(
     "SELECT name FROM moviles WHERE type = 'table';"
