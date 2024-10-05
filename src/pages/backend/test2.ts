@@ -3,9 +3,10 @@ import type { APIContext } from "astro";
 export async function GET(context: APIContext): Promise<Response> {
   const db = context.locals.runtime.env.DB;
   const result = await db.prepare(
-    "SELECT name FROM sqlite_schema WHERE type = 'table';"
+    "SELECT name FROM moviles WHERE type = 'table';"
   );
-  console.log(result); // Log the table names
+  console.log(db);
+  console.log(result);
   //   try {
   //     // Prepare and execute the SQL query using Cloudflare D1 API
   //     const result = await db.prepare("SELECT * FROM ID").all();

@@ -4,5 +4,5 @@ pages_build_output_dir = "./dist"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "moviles"
-database_id = "4c23263b-7935-4884-864c-713133788cea"
+database_name = "spacetags"
+database_id = "4e81904e-1538-41da-8d7c-b01e0d32f8e9"
