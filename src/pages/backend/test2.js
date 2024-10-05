@@ -2,9 +2,7 @@
 
 export async function GET(context) {
   const db = context.locals.runtime.env.DB;
-  const result = await db.prepare(
-    "SELECT name FROM moviles WHERE type = 'table';"
-  );
+  const result = await db.prepare("SELECT * FROM cosas WHERE cosa = 12;");
   console.log(db);
   console.log(result);
   //   try {
