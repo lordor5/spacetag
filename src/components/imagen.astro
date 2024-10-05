@@ -1,13 +1,16 @@
 ---
-const imagen = 4
----
+const db = Astro.locals.runtime.env.DB;
+const result = await db.prepare("SELECT * FROM usuarios WHERE id = 0;").run();
+console.log(result.results);
 
+const imagen = 4;
+---
 
 <img src=`/${imagen}.jpg` alt="taza" class="custom-image" />
 
 <style>
-    .custom-image {
-		width: 200px; /* Cambia el tamaño según tus necesidades */
-		height: 200px; /* Mantiene la proporción de la imagen */
-	  }
+  .custom-image {
+    width: 200px; /* Cambia el tamaño según tus necesidades */
+    height: 200px; /* Mantiene la proporción de la imagen */
+  }
 </style>
