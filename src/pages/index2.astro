@@ -1,23 +1,33 @@
 ---
 import Layout from "../layouts/Layout.astro";
 const db = Astro.locals.runtime.env.DB;
-const result = await db.prepare("SELECT * FROM dispositivos;").run();
-console.log(result.results);
 
-let image = [0, 1, 2, 3];
+let image = [1, 2, 3, 4];
 
-//let imagen;
+let id = 0;
 if (Astro.cookies.has("id")) {
   const cookie = Astro.cookies.get("id");
   const id = cookie?.number();
-  const result = await db
-    .prepare(`SELECT * FROM dispositivos id = ${id};`)
+  const { results } = await db
+    .prepare(`SELECT * FROM dispositivos where id = ${id};`)
     .run();
-  console.log(result.results);
-  //imagen = result.results[id].imagen;
+
+  if (results[0]) {
+    image[0] = results[0].imagen;
+    console.log("Has cookie", id);
+  } else {
+    await db
+      .prepare(`INSERT INTO dispositivos (imagen) VALUES (${image[0]});`)
+      .run();
+    const { results } = await db
+      .prepare(`SELECT * FROM dispositivos ORDER BY id DESC LIMIT 1;`)
+      .run();
+    const id = results[0].id;
+    console.log("Image ID", id);
+    Astro.cookies.set("id", JSON.stringify(id));
+  }
 } else {
   const result = await db.prepare(`SELECT * FROM dispositivos;`).run();
-  let id = 0;
   for (let i = 0; i < result.results.length; i++) {
     if (result.results[i].id > id) {
       id = result.results[i].id;
@@ -28,20 +38,87 @@ if (Astro.cookies.has("id")) {
       }
     }
   }
-  await db
-    .prepare(`INSERT INTO dispositivos (imagen) VALUES (${image[0]});`)
-    .run();
-  // Astro.cookies.set('id', id)
+  if (image[0]) {
+    await db
+      .prepare(`INSERT INTO dispositivos (imagen) VALUES (${image[0]});`)
+      .run();
+  } else {
+    // console.log("Faltan imágenes");
+  }
+
+  Astro.cookies.set("id", JSON.stringify(id));
 }
+const img = image[id];
+console.log(img);
+const { results } = await db.prepare(`SELECT * FROM usuarios`).run();
+const jugadores = results;
 ---
 
 <Layout title="Welcome to Astro.">
-  <img src=`/${image}.jpg` alt="taza" class="custom-image" />
-
-  <style>
-    .custom-image {
-      width: 200px; /* Cambia el tamaño según tus necesidades */
-      height: 200px; /* Mantiene la proporción de la imagen */
+  <img src=`/${img}.jpg` alt="taza" class="custom-image" />
+  <form action="/backend/test" method="POST">
+    <div class="buttons">
+      <div style="width: 50%;">
+        <button
+          type="submit"
+          name="jugador"
+          value={jugadores[0].nombre}
+          style="background-color: rgb(239, 91, 91);"
+          >{jugadores[0].nombre} puntos: {jugadores[0].puntos}</button
+        >
+        <button
+          type="submit"
+          name="jugador"
+          value={jugadores[1].nombre}
+          style="background-color: rgb(48, 183, 48);"
+          >{jugadores[1].nombre} puntos: {jugadores[1].puntos}</button
+        >
+      </div>
+      <div style="width: 50%;">
+        <button
+          type="submit"
+          name="jugador"
+          value={jugadores[2].nombre}
+          style="background-color: rgb(139, 139, 244);"
+          >{jugadores[2].nombre} puntos: {jugadores[2].puntos}</button
+        >
+        <button
+          type="submit"
+          name="jugador"
+          value={jugadores[3].nombre}
+          style="background-color: yellow;"
+          >{jugadores[3].nombre} puntos: {jugadores[3].puntos}</button
+        >
+      </div>
+    </div>
+  </form>
+  <script is:inline>
+    // Function to update content
+    function updateContent() {
+      location.reload();
     }
-  </style>
+
+    // Update the page every 5 seconds
+    setInterval(updateContent, 5000);
+
+    // Optional: update immediately on page load
+    document.readyState = updateContent;
+  </script>
 </Layout>
+
+<style>
+  .buttons {
+    display: flex;
+  }
+  button {
+    width: 100%;
+    height: 10vh;
+    border-radius: 10px;
+    border: none;
+  }
+  .custom-image {
+    width: 100%; /* Cambia el tamaño según tus necesidades */
+    height: 70vh; /* Mantiene la proporción de la imagen */
+    object-fit: cover;
+  }
+</style>
