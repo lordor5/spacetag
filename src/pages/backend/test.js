@@ -32,27 +32,10 @@ export async function POST(context) {
       .run();
   }
 
-  //   const data = await request.formData();
-  //   const nmovil = data.get("nmovil");
-  //   // Validate the data - you'll probably want to do more than this
-  //   if (!nmovil) {
-  //     return new Response(
-  //       JSON.stringify({
-  //         message: "Missing required fields",
-  //       }),
-  //       { status: 400 }
-  //     );
-  //   }
-  //   // Do something with the data, then return a success response
-  //   //const query1 = db.prepare("SELECT MAX(ID) from ID");
-  //   //const maxid = await query1.first("maxid");
-
-  //   const query = db.prepare("INSERT INTO ID (ID, NumeroFoto) VALUES (?1, ?2) ON CONFLICT (ID) DO UPDATE SET NumeroFoto = ?2;").bind(nmovil,0).run();
-
   return new Response(null, {
     status: 302, // Use 301 for a permanent redirect
     headers: {
-      Location: "/index2", // The URL to redirect to
+      Location: "/", // The URL to redirect to
     },
   });
 }
